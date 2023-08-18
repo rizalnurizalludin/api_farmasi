@@ -7,23 +7,22 @@ import (
 )
 
 func InitRoute(r *gin.Engine) {
-	public := r.Group("")
 
-	public.GET("/", func(c *gin.Context) {
+	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, "Welcome to API")
 	})
-	public.POST("/register", controllers.Register)
-	public.POST("/login", controllers.Login)
-	public.GET("/api/meds", controllers.GetMeds)
+	r.POST("/register", controllers.Register)
+	r.POST("/login", controllers.Login)
+	r.GET("/api/meds", controllers.GetMeds)
 
-	protected := r.Group("")
-	protected.Use(controllers.JwtAuthMiddleware())
+	auth := r.Group("")
+	auth.Use(controllers.JwtAuthMiddleware())
 
-	protected.GET("/users", controllers.GetUsers)
+	auth.GET("/users", controllers.GetUsers)
 
-	protected.POST("/meds", controllers.AddMeds)
-	protected.GET("/meds", controllers.GetMeds)
-	protected.GET("/meds/:id", controllers.GetMedDetail)
-	protected.POST("/meds/:id", controllers.UpdateMed)
-	protected.DELETE("meds/:id", controllers.DeleteMed)
+	auth.POST("/meds", controllers.AddMeds)
+	auth.GET("/meds", controllers.GetMeds)
+	auth.GET("/meds/:id", controllers.GetMedDetail)
+	auth.POST("/meds/:id", controllers.UpdateMed)
+	auth.DELETE("meds/:id", controllers.DeleteMed)
 }
