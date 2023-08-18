@@ -12,7 +12,7 @@ func main() {
 	// loadEnv()
 	config.InitDatabase()
 	welcome := gin.Default()
-	welcome.GET("/", func(c *gin.Context) {
+	welcome.GET("/home", func(c *gin.Context) {
 		c.JSON(200, "Welcome To API")
 	})
 	router := gin.Default()
