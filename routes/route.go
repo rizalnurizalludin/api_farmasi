@@ -9,6 +9,9 @@ import (
 func InitRoute(r *gin.Engine) {
 	public := r.Group("/")
 
+	public.GET("/", func(c *gin.Context) {
+		c.JSON(200, "Welcome to API")
+	})
 	public.POST("/register", controllers.Register)
 	public.POST("/login", controllers.Login)
 
