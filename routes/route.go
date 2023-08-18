@@ -14,7 +14,7 @@ func InitRoute(r *gin.Engine) {
 	})
 	public.POST("/register", controllers.Register)
 	public.POST("/login", controllers.Login)
-	public.GET("/meds", controllers.GetMeds)
+	public.GET("/api/meds", controllers.GetMeds)
 
 	protected := r.Group("/")
 	protected.Use(controllers.JwtAuthMiddleware())
