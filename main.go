@@ -4,6 +4,7 @@ import (
 	"gudang-obat/config"
 	"gudang-obat/routes"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -14,7 +15,7 @@ func main() {
 	config.InitDatabase()
 	router := gin.Default()
 	routes.InitRoute(router)
-	router.Run(":1234")
+	router.Run(getPort())
 }
 
 func loadEnv() {
@@ -22,4 +23,11 @@ func loadEnv() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+}
+
+func getPort() string {
+	if envPort := os.Getenv("PORT"); envPort != "" {
+		return ":" + envPort
+	}
+	return ":8080"
 }
