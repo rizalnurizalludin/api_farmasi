@@ -3,11 +3,9 @@ package main
 import (
 	"gudang-obat/config"
 	"gudang-obat/routes"
-	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -16,13 +14,6 @@ func main() {
 	router := gin.Default()
 	routes.InitRoute(router)
 	router.Run(getPort())
-}
-
-func loadEnv() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 }
 
 func getPort() string {
