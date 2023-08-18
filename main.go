@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	loadEnv()
+	// loadEnv()
 	config.InitDatabase()
 	router := gin.Default()
 	routes.InitRoute(router)
