@@ -7,7 +7,7 @@ import (
 )
 
 func InitRoute(r *gin.Engine) {
-	public := r.Group("/")
+	public := r.Group("")
 
 	public.GET("/", func(c *gin.Context) {
 		c.JSON(200, "Welcome to API")
@@ -16,7 +16,7 @@ func InitRoute(r *gin.Engine) {
 	public.POST("/login", controllers.Login)
 	public.GET("/api/meds", controllers.GetMeds)
 
-	protected := r.Group("/")
+	protected := r.Group("")
 	protected.Use(controllers.JwtAuthMiddleware())
 
 	protected.GET("/users", controllers.GetUsers)
