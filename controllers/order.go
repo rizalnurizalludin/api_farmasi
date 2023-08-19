@@ -46,6 +46,7 @@ func GetOrderDetail(c *gin.Context) {
 
 func CreateOrders(c *gin.Context) {
 	var requestInput models.Order
+	var med models.Med
 	c.Bind(&requestInput)
 
 	// masukkan ke database
@@ -58,6 +59,14 @@ func CreateOrders(c *gin.Context) {
 			"data":    nil,
 		})
 	}
+
+	if result := config.DB.First(&med, requestInput.ID); result.Error != nil {
+		c.AbortWithError(http.StatusNotFound, result.Error)
+		return
+	}
+
+	med.Stock = med.Stock - requestInput.Qty
+	config.DB.Save(&med)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":  true,
