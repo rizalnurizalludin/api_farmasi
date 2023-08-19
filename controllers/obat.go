@@ -68,7 +68,7 @@ func AddMeds(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  true,
 		"message": "Berhasil",
-		"data":    result,
+		"data":    requestInput,
 	})
 }
 
