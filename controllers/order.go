@@ -8,11 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type InputCreate struct {
-	MedID uint `json:"med_id"`
-	Qty   uint `json:"qty"`
-}
-
 func GetOrders(c *gin.Context) {
 	var orders []models.Order
 
@@ -50,7 +45,7 @@ func GetOrderDetail(c *gin.Context) {
 }
 
 func CreateOrders(c *gin.Context) {
-	var requestInput InputCreate
+	var requestInput models.Order
 	c.Bind(&requestInput)
 
 	// masukkan ke database
