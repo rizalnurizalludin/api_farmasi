@@ -13,7 +13,7 @@ func InitRoute(r *gin.Engine) {
 	})
 	r.POST("/register", controllers.Register)
 	r.POST("/login", controllers.Login)
-	r.GET("/meds", controllers.GetMeds)
+	r.GET("/api/meds", controllers.GetMeds)
 
 	auth := r.Group("")
 	auth.Use(controllers.JwtAuthMiddleware())
