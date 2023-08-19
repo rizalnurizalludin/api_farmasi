@@ -62,6 +62,10 @@ func CreateOrders(c *gin.Context) {
 
 	if result := config.DB.First(&med, requestInput.MedID); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
+		c.JSON(http.StatusConflict, gin.H{
+			"status":  false,
+			"message": "meds not found",
+		})
 		return
 	}
 
@@ -88,6 +92,10 @@ func DeleteOrder(c *gin.Context) {
 
 	if result := config.DB.First(&med, order.MedID); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
+		c.JSON(http.StatusConflict, gin.H{
+			"status":  false,
+			"message": "meds not found",
+		})
 		return
 	}
 
