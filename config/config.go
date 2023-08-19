@@ -29,5 +29,5 @@ func InitDatabase() {
 }
 
 func initMigration() {
-	DB.AutoMigrate(&models.Med{}, models.MedIn{}, models.MedOut{}, &models.User{})
+	DB.AutoMigrate(&models.Med{}, &models.User{}, &models.Order{})
 }

@@ -13,7 +13,6 @@ func InitRoute(r *gin.Engine) {
 	})
 	r.POST("/register", controllers.Register)
 	r.POST("/login", controllers.Login)
-	r.GET("/api/meds", controllers.GetMeds)
 
 	auth := r.Group("")
 	auth.Use(controllers.JwtAuthMiddleware())
@@ -25,4 +24,9 @@ func InitRoute(r *gin.Engine) {
 	auth.GET("/meds/:id", controllers.GetMedDetail)
 	auth.POST("/meds/:id", controllers.UpdateMed)
 	auth.DELETE("meds/:id", controllers.DeleteMed)
+
+	auth.POST("/orders", controllers.CreateOrders)
+	auth.GET("/orders", controllers.GetOrders)
+	auth.GET("/orders/:id", controllers.GetOrderDetail)
+	auth.DELETE("orders/:id", controllers.DeleteOrder)
 }
