@@ -11,6 +11,7 @@ import (
 type UpdateMedRequestBody struct {
 	Name  string `json:"name"`
 	Type  string `json:"type"`
+	Price uint   `json:"price"`
 	Stock uint   `json:"stock"`
 }
 
@@ -90,6 +91,7 @@ func UpdateMed(c *gin.Context) {
 
 	med.Name = body.Name
 	med.Type = body.Type
+	med.Price = body.Price
 	med.Stock = body.Stock
 
 	config.DB.Save(&med)
