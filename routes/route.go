@@ -11,9 +11,9 @@ func InitRoute(r *gin.Engine) {
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, "Welcome to API")
 	})
-	r.POST("/api/register", controllers.Register)
-	r.POST("api//login", controllers.Login)
-	r.GET("/api/meds", controllers.GetMeds)
+	r.POST("/register", controllers.Register)
+	r.POST("/login", controllers.Login)
+	r.GET("/meds", controllers.GetMeds)
 
 	auth := r.Group("")
 	auth.Use(controllers.JwtAuthMiddleware())
