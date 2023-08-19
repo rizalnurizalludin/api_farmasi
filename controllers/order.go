@@ -60,7 +60,7 @@ func CreateOrders(c *gin.Context) {
 		})
 	}
 
-	if result := config.DB.First(&med, requestInput.ID); result.Error != nil {
+	if result := config.DB.First(&med, requestInput.MedID); result.Error != nil {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
@@ -77,6 +77,7 @@ func CreateOrders(c *gin.Context) {
 
 func DeleteOrder(c *gin.Context) {
 	id := c.Param("id")
+	var med models.Med
 
 	var order models.Order
 
@@ -84,6 +85,14 @@ func DeleteOrder(c *gin.Context) {
 		c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
+
+	if result := config.DB.First(&med, order.MedID); result.Error != nil {
+		c.AbortWithError(http.StatusNotFound, result.Error)
+		return
+	}
+
+	med.Stock = med.Stock + order.Qty
+	config.DB.Save(&med)
 
 	config.DB.Delete(&order)
 
