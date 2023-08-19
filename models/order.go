@@ -4,6 +4,7 @@ import "gorm.io/gorm"
 
 type Order struct {
 	gorm.Model
-	MedID int
-	Qty   int
+	MedID  uint `json:"med_id"`
+	UserID uint `json:"user_id"`
+	Qty    uint `json:"qty"`
 }
