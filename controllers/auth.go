@@ -5,7 +5,6 @@ import (
 	"gudang-obat/models"
 	"gudang-obat/token"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -61,27 +60,14 @@ func Login(c *gin.Context) {
 	u.Username = input.Username
 	u.Password = input.Password
 
-	user, token, err := LoginCheck(u.Username, u.Password)
+	_, err := LoginCheck(u.Username, u.Password)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "username or password is incorrect."})
 		return
 	}
 
-	s := models.Session{}
-	s.CreatedAt = time.Now()
-	s.UpdatedAt = time.Now()
-	s.UserID = user.ID
-	s.Token = token
-	s.ExpiredAt = time.Now().Add(24 * time.Hour)
-	result := config.DB.Create(&s).Error
-
-	if result != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "failed set session"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"data": s})
+	c.JSON(http.StatusOK, gin.H{"data": u})
 
 }
 
@@ -89,42 +75,30 @@ func VerifyPassword(password, hashedPassword string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
 
-func LoginCheck(username string, password string) (models.User, string, error) {
+func LoginCheck(username string, password string) (string, error) {
 
 	var err error
 
 	u := models.User{}
 
-	// err = config.DB.Model(models.User{}).Where("username = ?", username).Take(&u).Error
-	user, err := FindUser(username)
+	err = config.DB.Model(models.User{}).Where("username = ?", username).Take(&u).Error
 
 	if err != nil {
-		return user, "", err
+		return "", err
 	}
 
 	err = VerifyPassword(password, u.Password)
 
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
-		return user, "", err
+		return "", err
 	}
 
 	token, err := token.GenerateToken(u.ID)
 
 	if err != nil {
-		return user, "", err
+		return "", err
 	}
 
-	return user, token, nil
-
-}
-
-func FindUser(username string) (models.User, error) {
-	var users models.User
-	err := config.DB.Where("username = ?", username).Find(&users).Error
-	if err != nil {
-		return users, err
-	}
-
-	return users, nil
+	return token, nil
 
 }
